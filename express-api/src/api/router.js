@@ -3,4 +3,4 @@ const { getAllWeatherData } = require('./api-routes');
 
 router.get('/weather', getAllWeatherData);
 
-module.exports = routers;
+module.exports = router;

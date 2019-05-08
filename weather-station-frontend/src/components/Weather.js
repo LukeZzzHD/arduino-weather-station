@@ -4,10 +4,12 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 class Weather extends Component {
-    state = {}
+    state = {
+        data: null
+    }
 
     componentDidMount() {
-        axios.get('http://localhost:8000/api/weather').then(res => console.log(res));
+        axios.get('http://localhost:8000/api/weather').then(res => this.setState({ data: res.data })).catch(err => console.error(err));
     }
 
     render() {

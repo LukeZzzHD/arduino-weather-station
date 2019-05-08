@@ -1,4 +1,4 @@
-export const getAllWeatherData = (req, res) => {
+const getAllWeatherData = (req, res) => {
     const dummyData = {
         temperature: {
             value: 10,
@@ -7,4 +7,8 @@ export const getAllWeatherData = (req, res) => {
     }
 
     res.status(200).json(dummyData);
+}
+
+module.exports = {
+    getAllWeatherData
 }
