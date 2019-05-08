@@ -5,7 +5,7 @@ const Navbar = () => {
     return (
         <nav>
             <div className="nav-wrapper indigo">
-                <Link to="/" className="white-text brand-logo right">AWS - Arduino Weather Station</Link>
+                <Link to="/" className="white-text brand-logo center">AWS</Link>
             </div>
         </nav>
     )

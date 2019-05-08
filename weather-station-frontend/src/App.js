@@ -7,8 +7,8 @@ import Weather from './components/Weather';
 function App() {
   return (
     <div className="App">
-      <Navbar />
       <Router>
+        <Navbar />
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/weather" component={Weather} />

@@ -10,3 +10,7 @@ app.get('/', (req, res) => {
     Goto /api/info to learn more
     `);
 });
+
+app.listen(PORT, err => {
+    err ? console.error(err) : console.log(`Listening for requests on port ${PORT}`);
+});
