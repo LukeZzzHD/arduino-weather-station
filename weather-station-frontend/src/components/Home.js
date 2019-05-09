@@ -8,7 +8,7 @@ const Home = () => {
                 <div className="container center-align">
                     <h1 className="center">Arduino Weather Station</h1>
                     <hr />
-                    <Link className="btn red lighten-2 white-text center" to="/weather">Weather<i className="material-icons right">send</i></Link>
+                    <Link className="btn indigo white-text center" to="/weather" style={{ marginTop: 20 + 'px' }}>Weather<i className="material-icons right">send</i></Link>
                 </div>
             </div>
         </div>
