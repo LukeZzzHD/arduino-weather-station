@@ -16,4 +16,9 @@ div.thermometer {
   display: flex;
   justify-content: space-around;
   align-content: flex-start;
+  margin-top: 20px;
+}
+
+.reload {
+  position: absolute;
 }
