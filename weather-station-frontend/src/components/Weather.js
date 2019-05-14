@@ -5,29 +5,33 @@ import M from 'materialize-css';
 
 class Weather extends Component {
     state = {
-        data: null,
-        lastRefresh: false
+        data: {
+            temperature: '...',
+            humidity: '...',
+            light: '...'
+        },
+        connection: true
     }
 
     componentDidMount() {
         this.handleReload();
+        setInterval(() => {
+            axios.get('http://localhost:8000/api/weather').then(res => this.setState({ data: res.data, connection: true })).catch(err => {
+                this.setState({ connection: false });
+            });
+        }, 2000);
     }
 
-    handleReload = e => {
-        axios.get('http://localhost:8000/api/weather').then(res => this.setState({ data: res.data })).catch(err => console.error(err));
-        this.setState({
-            lastRefresh: new Date()
+    handleReload = () => {
+        axios.get('http://localhost:8000/api/weather').then(res => {
+            this.setState({ data: res.data, connection: true });
+        }).catch(err => {
+            M.toast({
+                html: 'Something went wrong, we cannot connect to the API',
+                classes: 'red'
+            });
+            this.setState({ connection: false });
         });
-    }
-
-    handleClick = e => {
-        let d = new Date();
-        let timePassed = (d.getTime() - this.state.lastRefresh.getTime()) / 1000;
-        if (timePassed < 20) {
-            M.toast({ html: `Last refresh done ${Math.round(timePassed)} seconds ago, wait atleast 20 seconds!` });
-        } else {
-            this.handleReload();
-        }
     }
 
     render() {
@@ -35,20 +39,26 @@ class Weather extends Component {
 
         return (
             <div className="row">
+                <button className={`connection btn-large btn-floating float-right ${this.state.connection ? 'green' : 'red'}`}>
+                    <i className="material-icons white-text">
+                        {
+                            this.state.connection ? 'wifi' : 'wifi_off'
+                        }
+                    </i>
+                </button>
                 <div className="col s12 m12 l12">
                     <div className="container">
                         <h1 className="center">Weather</h1>
-                        <hr />
-                        <div className="card-container">
-                            <DataCard label="Temperature" value={temperature} />
-                            <DataCard label="Humidity" value={humidity} />
-                            <DataCard label="Light" value={light} />
+                        <div className="row">
+                            <DataCard label="Temperature" value={temperature} unit="°C" />
+                            <DataCard label="Humidity" value={humidity} unit="%" />
+                            <DataCard label="Light" value={light} unit="lx" />
                         </div>
                     </div>
                 </div>
                 <div className="col s12 m12 l12">
                     <div className="container center-align" style={{ marginTop: 10 + 'px' }}>
-                        <button className="btn-large red ligthen-1 white-text tooltipped" data-position="bottom" data-tooltip="Reload" onClick={this.handleClick}>
+                        <button className="btn-large btn-floating red ligthen-1 white-text tooltipped" data-position="bottom" data-tooltip="Reload" onClick={this.handleReload}>
                             <i className="material-icons">autorenew</i>
                         </button>
                     </div>

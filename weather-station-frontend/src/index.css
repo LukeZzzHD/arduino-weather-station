@@ -3,20 +3,13 @@
 }
 
 .data-card {
-  width: 24%;
-  height: 200px;
   cursor: pointer;
 }
 
-div.thermometer {
-  margin: auto;
-}
-
-.card-container {
-  display: flex;
-  justify-content: space-around;
-  align-content: flex-start;
-  margin-top: 20px;
+.connection {
+  position: absolute;
+  right: 6px;
+  top: 68px;
 }
 
 .reload {
