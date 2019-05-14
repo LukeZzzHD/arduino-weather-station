@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import DataCard from './DataCard';
 import axios from 'axios';
+import M from 'materialize-css';
 
 class Weather extends Component {
     state = {
@@ -22,8 +23,8 @@ class Weather extends Component {
     handleClick = e => {
         let d = new Date();
         let timePassed = (d.getTime() - this.state.lastRefresh.getTime()) / 1000;
-        if (timePassed < 60) {
-            M.toast({ html: `Last refresh done ${timePassed} seconds ago, wait atleast one minute!` });
+        if (timePassed < 20) {
+            M.toast({ html: `Last refresh done ${Math.round(timePassed)} seconds ago, wait atleast 20 seconds!` });
         } else {
             this.handleReload();
         }
