@@ -40,7 +40,7 @@ class SerialReader {
                         light: rand()
                     })
                 );
-            }, 1000);
+            }, 5000);
         } else {
             this.port.open();
         }

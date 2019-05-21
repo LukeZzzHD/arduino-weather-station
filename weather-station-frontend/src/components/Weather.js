@@ -19,7 +19,7 @@ class Weather extends Component {
             axios.get('http://localhost:8000/api/weather').then(res => this.setState({ data: res.data, connection: true })).catch(err => {
                 this.setState({ connection: false });
             });
-        }, 2000);
+        }, 5000);
     }
 
     handleReload = () => {
