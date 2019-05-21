@@ -1,5 +1,5 @@
 const SerialReader = require('../arduino/SerialReader');
-const reader = new SerialReader('COM1');
+const reader = new SerialReader('COM4');
 reader.start();
 
 const getAllWeatherData = (req, res) => {

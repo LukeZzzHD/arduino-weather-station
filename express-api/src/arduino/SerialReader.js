@@ -13,18 +13,24 @@ class SerialReader {
             const Readline = require('@serialport/parser-readline');
             const parser = this.port.pipe(new Readline({ delimiter: '\n' }));
             parser.on('data', data => {
-                this.data = JSON.parse(data);
+                this.data = {
+					...JSON.parse(data),
+					date: new Date()
+				}
             });
         } else {
             this.port.on('data', data => {
-                this.data = JSON.parse(data);
+                this.data = {
+					...JSON.parse(data),
+					date: new Date()
+				}
             });
         }
 
         this.port.on('open', err => {
             err 
                 ? console.error(err)
-                : console.log(`Port ${portName} has been opened id ${process.env.NODE_ENV} mode`);
+                : console.log(`Port ${portName} has been opened in ${process.env.NODE_ENV} mode`);
         });
     }
 
@@ -41,8 +47,6 @@ class SerialReader {
                     })
                 );
             }, 5000);
-        } else {
-            this.port.open();
         }
     }
 }

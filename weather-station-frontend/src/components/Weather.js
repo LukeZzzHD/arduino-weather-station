@@ -8,7 +8,8 @@ class Weather extends Component {
         data: {
             temperature: '...',
             humidity: '...',
-            light: '...'
+            light: '...',
+            date: false
         },
         connection: true
     }
@@ -36,10 +37,11 @@ class Weather extends Component {
 
     render() {
         const { temperature, humidity, light } = this.state.data || 0;
+        const date = new Date(this.state.data.date).toLocaleString('en-US',{ year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'});
 
         return (
             <div className="row">
-                <button className={`connection btn-large btn-floating float-right ${this.state.connection ? 'green' : 'red'}`}>
+                <button className={`connection disabled btn-large btn-floating float-right`}>
                     <i className="material-icons white-text">
                         {
                             this.state.connection ? 'wifi' : 'wifi_off'
@@ -47,8 +49,9 @@ class Weather extends Component {
                     </i>
                 </button>
                 <div className="col s12 m12 l12">
-                    <div className="container">
+                    <div className="container center-align">
                         <h1 className="center">Weather</h1>
+                        <span>Last measurement: { date }</span>
                         <div className="row">
                             <DataCard label="Temperature" value={temperature} unit="°C" />
                             <DataCard label="Humidity" value={humidity} unit="%" />
