@@ -46,7 +46,7 @@ class SerialReader {
                         light: rand()
                     })
                 );
-            }, 5000);
+            }, 2000);
         }
     }
 }

@@ -2,56 +2,53 @@ import React, { Component } from 'react';
 import DataCard from './DataCard';
 import axios from 'axios';
 import M from 'materialize-css';
+import { connect } from 'react-redux';
 
 class Weather extends Component {
-    state = {
-        data: {
-            temperature: '...',
-            humidity: '...',
-            light: '...',
-            date: false
-        },
-        connection: true
-    }
 
     componentDidMount() {
+		const { updateData, updateHistory, connect, disconnect } = this.props;
         this.handleReload();
         setInterval(() => {
-            axios.get('http://localhost:8000/api/weather').then(res => this.setState({ data: res.data, connection: true })).catch(err => {
-                this.setState({ connection: false });
+            axios.get('http://localhost:8000/api/weather').then(res => {
+				updateData(res.data);
+				updateHistory(res.data);
+			}).catch(err => {
+                console.error(err);
             });
         }, 5000);
+		setInterval(() => {
+			axios.get('http://localhost:8000/api/connection').then(res => {
+				connect();
+			}).catch(err => {
+				disconnect();
+			});
+		}, 500);
     }
 
     handleReload = () => {
+		const { updateData, updateHistory } = this.props;
         axios.get('http://localhost:8000/api/weather').then(res => {
-            this.setState({ data: res.data, connection: true });
+            updateData(res.data);
+			updateHistory(res.data);
         }).catch(err => {
             M.toast({
                 html: 'Something went wrong, we cannot connect to the API',
                 classes: 'red'
             });
-            this.setState({ connection: false });
         });
     }
 
     render() {
-        const { temperature, humidity, light } = this.state.data || 0;
-        const date = new Date(this.state.data.date).toLocaleString('en-US',{ year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'});
-
+        const { temperature, humidity, light, date } = this.props.data || 0;
+        const reloadDate = new Date(date).toLocaleString('en-US',{ year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'});
+		
         return (
             <div className="row">
-                <button className={`connection disabled btn-large btn-floating float-right`}>
-                    <i className="material-icons white-text">
-                        {
-                            this.state.connection ? 'wifi' : 'wifi_off'
-                        }
-                    </i>
-                </button>
                 <div className="col s12 m12 l12">
                     <div className="container center-align">
                         <h1 className="center">Weather</h1>
-                        <span>Last measurement: { date }</span>
+                        <span>Last measurement: { reloadDate }</span>
                         <div className="row">
                             <DataCard label="Temperature" value={temperature} unit="°C" />
                             <DataCard label="Humidity" value={humidity} unit="%" />
@@ -71,4 +68,19 @@ class Weather extends Component {
     }
 }
 
-export default Weather;
+const mapStateToProps = state => ({
+	data: {...state.data},
+	dataHistory: {...state.history}
+});
+
+const mapDispatchToProps = dispatch => ({
+	updateData: data => dispatch({ type: 'UPDATE_DATA', payload: data }),
+	connect: () => dispatch({ type: 'CONNECT' }),
+	disconnect: () => dispatch({ type: 'DISCONNECT' }),
+	updateHistory: data => dispatch({ type: 'UPDATE_HISTORY', payload: data })
+});
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(Weather);
