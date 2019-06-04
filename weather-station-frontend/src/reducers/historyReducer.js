@@ -5,15 +5,15 @@ const initState = () => ({
 const historyReducer = (state = initState(), action) => {
 	switch (action.type) {
 		case 'UPDATE_HISTORY':
-			if (state.dataHistory.length > 9) {
+			if (state.dataHistory.length > 49) {
 				let poppedHistory = state.dataHistory;
 				poppedHistory.pop();
 				return {
-					dataHistory: [action.payload, poppedHistory]
+					dataHistory: [action.payload, ...poppedHistory]
 				}
 			} else {
 				return {
-					dataHistory: [action.payload, state.dataHistory]
+					dataHistory: [action.payload, ...state.dataHistory]
 				}
 			}
 		

@@ -30,7 +30,7 @@ class Weather extends Component {
 		const { updateData, updateHistory } = this.props;
         axios.get('http://localhost:8000/api/weather').then(res => {
             updateData(res.data);
-			updateHistory(res.data);
+            updateHistory(res.data);
         }).catch(err => {
             M.toast({
                 html: 'Something went wrong, we cannot connect to the API',
@@ -40,7 +40,7 @@ class Weather extends Component {
     }
 
     render() {
-        const { temperature, humidity, light, date } = this.props.data || 0;
+        const { temperature, humidity, light, date } = this.props.data;
         const reloadDate = new Date(date).toLocaleString('en-US',{ year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'});
 		
         return (
