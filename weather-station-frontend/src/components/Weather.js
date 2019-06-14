@@ -40,7 +40,8 @@ class Weather extends Component {
     }
 
     render() {
-        const { temperature, humidity, light, date } = this.props.data;
+        const { temperature, humidity, date } = this.props.data;
+		const light = Math.round(this.props.data.light / 10.24);
         const reloadDate = new Date(date).toLocaleString('en-US',{ year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'});
 		
         return (
@@ -52,7 +53,7 @@ class Weather extends Component {
                         <div className="row">
                             <DataCard label="Temperature" value={temperature} unit="°C" />
                             <DataCard label="Humidity" value={humidity} unit="%" />
-                            <DataCard label="Light" value={light} unit="lx" />
+                            <DataCard label="Light" value={light} unit="%" />
                         </div>
                     </div>
                 </div>

@@ -1,6 +1,12 @@
 const SerialPort = process.env.NODE_ENV == 'production' ? 
     require('serialport') : 
     require('virtual-serialport');
+	
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 class SerialReader {
     constructor (portName) {
@@ -37,13 +43,12 @@ class SerialReader {
     start () {
         if (process.env.NODE_ENV == 'development') {
             this.port.on('dataToDevice', data => this.port.writeToComputer(data));
-            const rand = () => Math.round(Math.random() * 100) - 50;
             setInterval(() => {
                 this.port.write(
                     JSON.stringify({
-                        temperature: rand(),
-                        humidity: rand(),
-                        light: rand()
+                        temperature: getRandomInt(-20, 50),
+                        humidity: getRandomInt(1, 100),
+                        light: getRandomInt(1, 1024)
                     })
                 );
             }, 2000);
